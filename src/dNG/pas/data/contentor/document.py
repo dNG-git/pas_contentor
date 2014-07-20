@@ -35,18 +35,16 @@ from time import time
 
 from dNG.pas.data.binary import Binary
 from dNG.pas.data.data_linker import DataLinker
-from dNG.pas.data.ownable_mixin import OwnableMixin
+from dNG.pas.data.ownable_lockable_read_mixin import OwnableLockableReadMixin
 from dNG.pas.database.sort_definition import SortDefinition
 from dNG.pas.database.instances.contentor_document import ContentorDocument as _DbContentorDocument
 from dNG.pas.database.instances.text_entry import TextEntry as _DbTextEntry
 from .category import Category
 
-class Document(DataLinker, OwnableMixin):
+class Document(DataLinker, OwnableLockableReadMixin):
 #
 	"""
 "Document" represents a contentor entry.
-
-TODO: Handle "locked" in is_readable, is_*, ...
 
 :author:     direct Netware Group
 :copyright:  direct Netware Group - All rights reserved
@@ -68,7 +66,7 @@ Constructor __init__(Document)
 		"""
 
 		DataLinker.__init__(self, db_instance)
-		OwnableMixin.__init__(self)
+		OwnableLockableReadMixin.__init__(self)
 	#
 
 	def delete(self):

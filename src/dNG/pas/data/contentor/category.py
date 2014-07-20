@@ -33,16 +33,14 @@ http://www.direct-netware.de/redirect.py?licenses;gpl
 
 from dNG.pas.data.binary import Binary
 from dNG.pas.data.data_linker import DataLinker
-from dNG.pas.data.ownable_mixin import OwnableMixin
+from dNG.pas.data.ownable_lockable_write_mixin import OwnableLockableWriteMixin
 from dNG.pas.data.subscribable_mixin import SubscribableMixin
 from dNG.pas.database.instances.contentor_category import ContentorCategory as _DbContentorCategory
 
-class Category(DataLinker, OwnableMixin, SubscribableMixin):
+class Category(DataLinker, OwnableLockableWriteMixin, SubscribableMixin):
 #
 	"""
 "Category" represents a contentor category.
-
-TODO: Handle "locked" in is_readable, is_*, ...
 
 :author:     direct Netware Group
 :copyright:  direct Netware Group - All rights reserved
@@ -64,7 +62,7 @@ Constructor __init__(Category)
 		"""
 
 		DataLinker.__init__(self, db_instance)
-		OwnableMixin.__init__(self)
+		OwnableLockableWriteMixin.__init__(self)
 		SubscribableMixin.__init__(self)
 	#
 
