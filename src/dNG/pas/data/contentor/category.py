@@ -35,9 +35,10 @@ from dNG.pas.data.binary import Binary
 from dNG.pas.data.data_linker import DataLinker
 from dNG.pas.data.ownable_lockable_write_mixin import OwnableLockableWriteMixin
 from dNG.pas.data.subscribable_mixin import SubscribableMixin
+from dNG.pas.database.lockable_mixin import LockableMixin
 from dNG.pas.database.instances.contentor_category import ContentorCategory as _DbContentorCategory
 
-class Category(DataLinker, OwnableLockableWriteMixin, SubscribableMixin):
+class Category(DataLinker, LockableMixin, OwnableLockableWriteMixin, SubscribableMixin):
 #
 	"""
 "Category" represents a contentor category.
@@ -62,6 +63,7 @@ Constructor __init__(Category)
 		"""
 
 		DataLinker.__init__(self, db_instance)
+		LockableMixin.__init__(self)
 		OwnableLockableWriteMixin.__init__(self)
 		SubscribableMixin.__init__(self)
 	#

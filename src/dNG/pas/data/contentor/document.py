@@ -36,12 +36,13 @@ from time import time
 from dNG.pas.data.binary import Binary
 from dNG.pas.data.data_linker import DataLinker
 from dNG.pas.data.ownable_lockable_read_mixin import OwnableLockableReadMixin
+from dNG.pas.database.lockable_mixin import LockableMixin
 from dNG.pas.database.sort_definition import SortDefinition
 from dNG.pas.database.instances.contentor_document import ContentorDocument as _DbContentorDocument
 from dNG.pas.database.instances.text_entry import TextEntry as _DbTextEntry
 from .category import Category
 
-class Document(DataLinker, OwnableLockableReadMixin):
+class Document(DataLinker, LockableMixin, OwnableLockableReadMixin):
 #
 	"""
 "Document" represents a contentor entry.
@@ -66,6 +67,7 @@ Constructor __init__(Document)
 		"""
 
 		DataLinker.__init__(self, db_instance)
+		LockableMixin.__init__(self)
 		OwnableLockableReadMixin.__init__(self)
 	#
 
