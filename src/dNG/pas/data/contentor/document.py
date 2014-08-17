@@ -86,7 +86,7 @@ Deletes this entry from the database.
 			db_text_entry_instance = self.local.db_instance.rel_text_entry
 
 			DataLinker.delete(self)
-			if (db_text_entry_instance != None): self._database.delete(db_text_entry_instance)
+			if (db_text_entry_instance != None): self.local.connection.delete(db_text_entry_instance)
 		#
 	#
 
@@ -97,7 +97,7 @@ Returns the default sort definition list.
 
 :param context: Sort definition context
 
-:return: (list) Sort definition list
+:return: (object) Sort definition
 :since:  v0.1.00
 		"""
 
@@ -105,7 +105,9 @@ Returns the default sort definition list.
 
 		return (DataLinker._get_default_sort_definition(self, context)
 		        if (context == "DataLinker") else
-		        [ ( "position", SortDefinition.ASCENDING ), ( "title", SortDefinition.ASCENDING ) ]
+		        SortDefinition([ ( "position", SortDefinition.ASCENDING ),
+		                         ( "title", SortDefinition.ASCENDING )
+		                       ])
 		       )
 	#
 
@@ -134,10 +136,10 @@ Insert the instance into the database.
 :since: v0.1.00
 		"""
 
-		DataLinker._insert(self)
-
-		with self, self._database.no_autoflush:
+		with self.local.connection.no_autoflush:
 		#
+			DataLinker._insert(self)
+
 			if (self.local.db_instance.time_published == None): self.local.db_instance.time_published = int(time())
 
 			data_missing = (self.is_data_attribute_none("owner_type", "entry_type", "guest_permission", "user_permission"))
@@ -169,7 +171,7 @@ Sets values given as keyword arguments to this method.
 
 		self._ensure_thread_local_instance(_DbContentorDocument)
 
-		with self, self._database.no_autoflush:
+		with self, self.local.connection.no_autoflush:
 		#
 			DataLinker.set_data_attributes(self, **kwargs)
 
