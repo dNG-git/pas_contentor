@@ -79,14 +79,14 @@ Deletes this entry from the database.
 :since: v0.1.00
 		"""
 
-		if (self.log_handler != None): self.log_handler.debug("#echo(__FILEPATH__)# -{0!r}.delete()- (#echo(__LINE__)#)", self, context = "pas_datalinker")
+		if (self.log_handler is not None): self.log_handler.debug("#echo(__FILEPATH__)# -{0!r}.delete()- (#echo(__LINE__)#)", self, context = "pas_datalinker")
 
 		with self:
 		#
 			db_text_entry_instance = self.local.db_instance.rel_text_entry
 
 			DataLinker.delete(self)
-			if (db_text_entry_instance != None): self.local.connection.delete(db_text_entry_instance)
+			if (db_text_entry_instance is not None): self.local.connection.delete(db_text_entry_instance)
 		#
 	#
 
@@ -101,7 +101,7 @@ Returns the default sort definition list.
 :since:  v0.1.00
 		"""
 
-		if (self.log_handler != None): self.log_handler.debug("#echo(__FILEPATH__)# -{0!r}._get_default_sort_definition({1})- (#echo(__LINE__)#)", self, context, context = "pas_datalinker")
+		if (self.log_handler is not None): self.log_handler.debug("#echo(__FILEPATH__)# -{0!r}._get_default_sort_definition({1})- (#echo(__LINE__)#)", self, context, context = "pas_datalinker")
 
 		return (DataLinker._get_default_sort_definition(self, context)
 		        if (context == "DataLinker") else
@@ -122,7 +122,7 @@ Returns the data for the requested attribute not defined for this instance.
 :since:  v0.1.00
 		"""
 
-		if (attribute == "content" and self.local.db_instance.rel_text_entry != None): _return = self.local.db_instance.rel_text_entry.content
+		if (attribute == "content" and self.local.db_instance.rel_text_entry is not None): _return = self.local.db_instance.rel_text_entry.content
 		else: _return = DataLinker._get_unknown_data_attribute(self, attribute)
 
 		return _return
@@ -140,7 +140,7 @@ Insert the instance into the database.
 		#
 			DataLinker._insert(self)
 
-			if (self.local.db_instance.time_published == None): self.local.db_instance.time_published = int(time())
+			if (self.local.db_instance.time_published is None): self.local.db_instance.time_published = int(time())
 
 			data_missing = (self.is_data_attribute_none("owner_type", "entry_type", "guest_permission", "user_permission"))
 			acl_missing = (len(self.local.db_instance.rel_acl) == 0)
@@ -150,11 +150,11 @@ Insert the instance into the database.
 			#
 				parent_data = parent_object.get_data_attributes("id_site", "owner_type", "entry_type", "guest_permission", "user_permission")
 
-				if (self.local.db_instance.id_site == None and parent_data['id_site'] != None): self.local.db_instance.id_site = parent_data['id_site']
-				if (self.local.db_instance.owner_type == None): self.local.db_instance.owner_type = parent_data['owner_type']
-				if (self.local.db_instance.entry_type == None): self.local.db_instance.entry_type = parent_data['entry_type']
-				if (self.local.db_instance.guest_permission == None): self.local.db_instance.guest_permission = parent_data['guest_permission']
-				if (self.local.db_instance.user_permission == None): self.local.db_instance.user_permission = parent_data['user_permission']
+				if (self.local.db_instance.id_site is None and parent_data['id_site'] is not None): self.local.db_instance.id_site = parent_data['id_site']
+				if (self.local.db_instance.owner_type is None): self.local.db_instance.owner_type = parent_data['owner_type']
+				if (self.local.db_instance.entry_type is None): self.local.db_instance.entry_type = parent_data['entry_type']
+				if (self.local.db_instance.guest_permission is None): self.local.db_instance.guest_permission = parent_data['guest_permission']
+				if (self.local.db_instance.user_permission is None): self.local.db_instance.user_permission = parent_data['user_permission']
 			#
 
 			# TODO: if (acl_missing and isinstance(parent_object, OwnableMixin)): self.data.acl_set_list(parent_object.data_acl_get_list())
@@ -187,7 +187,7 @@ Sets values given as keyword arguments to this method.
 
 			if ("content" in kwargs):
 			#
-				if (self.local.db_instance.rel_text_entry == None):
+				if (self.local.db_instance.rel_text_entry is None):
 				#
 					self.local.db_instance.rel_text_entry = _DbTextEntry()
 					self.local.db_instance.rel_text_entry.id = self.local.db_instance.id
