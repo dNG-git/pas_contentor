@@ -52,6 +52,11 @@ class Category(DataLinker, LockableMixin, OwnableLockableWriteMixin, Subscribabl
              GNU General Public License 2
 	"""
 
+	_DB_INSTANCE_CLASS = _DbContentorCategory
+	"""
+SQLAlchemy database instance class to initialize for new instances.
+	"""
+
 	def __init__(self, db_instance = None):
 	#
 		"""
@@ -68,6 +73,96 @@ Constructor __init__(Category)
 		SubscribableMixin.__init__(self)
 	#
 
+	def get_categories(self, offset = 0, limit = -1):
+	#
+		"""
+Returns the children categories of this instance.
+
+:param offset: SQLAlchemy query offset
+:param limit: SQLAlchemy query limit
+
+:return: (list) Category children instances
+:since:  v0.1.01
+		"""
+
+		if (self.log_handler is not None): self.log_handler.debug("#echo(__FILEPATH__)# -{0!r}.get_categories({1:d}, {2:d})- (#echo(__LINE__)#)", self, offset, limit, context = "pas_datalinker")
+		return DataLinker.get_sub_entries(self, offset, limit, identity = "ContentorCategory")
+	#
+
+	def get_categories_count(self):
+	#
+		"""
+Returns the number of child categories of this instance.
+
+:return: (int) Number of child categories
+:since:  v0.1.01
+		"""
+
+		return DataLinker.get_sub_entries_count(self, identity = "ContentorCategory")
+	#
+
+	def _get_data_attribute(self, attribute):
+	#
+		"""
+Returns the data for the requested attribute.
+
+:param attribute: Requested attribute
+
+:return: (mixed) Value for the requested attribute; None if undefined
+:since:  v0.1.00
+		"""
+
+		return (self.get_sub_entries_count()
+		        if (attribute == "sub_entries") else
+		        DataLinker._get_data_attribute(self, attribute)
+		       )
+	#
+
+	def get_sub_entries(self, offset = 0, limit = -1):
+	#
+		"""
+Returns the child entries of this instance.
+
+:param offset: SQLAlchemy query offset
+:param limit: SQLAlchemy query limit
+
+:return: (list) DataLinker children instances
+:since:  v0.1.00
+		"""
+
+		if (self.log_handler is not None): self.log_handler.debug("#echo(__FILEPATH__)# -{0!r}.get_sub_entries({1:d}, {2:d})- (#echo(__LINE__)#)", self, offset, limit, context = "pas_datalinker")
+		return DataLinker.get_sub_entries(self, offset, limit, exclude_identity = "ContentorCategory")
+	#
+
+	def get_sub_entries_count(self):
+	#
+		"""
+Returns the number of child entries of this instance.
+
+:return: (int) Number of child entries
+:since:  v0.1.00
+		"""
+
+		return DataLinker.get_sub_entries_count(self, exclude_identity = "ContentorCategory")
+	#
+
+	def _get_unknown_data_attribute(self, attribute):
+	#
+		"""
+Returns the data for the requested attribute not defined for this instance.
+
+:param attribute: Requested attribute
+
+:return: (dict) Value for the requested attribute; None if undefined
+:since:  v0.1.00
+		"""
+
+		if (attribute == "categories"): _return = self.get_categories_count()
+		else: _return = DataLinker._get_unknown_data_attribute(self, attribute)
+
+		return _return
+	#
+
 	def set_data_attributes(self, **kwargs):
 	#
 		"""
@@ -75,8 +170,6 @@ Sets values given as keyword arguments to this method.
 
 :since: v0.1.00
 		"""
-
-		self._ensure_thread_local_instance(_DbContentorCategory)
 
 		with self:
 		#
@@ -86,8 +179,8 @@ Sets values given as keyword arguments to this method.
 			if ("entry_type" in kwargs): self.local.db_instance.entry_type = kwargs['entry_type']
 			if ("owner_type" in kwargs): self.local.db_instance.owner_type = kwargs['owner_type']
 			if ("locked" in kwargs): self.local.db_instance.locked = kwargs['locked']
-			if ("guest_permission" in kwargs): self.local.db_instance.public_permission = kwargs['guest_permission']
-			if ("user_permission" in kwargs): self.local.db_instance.public_permission = kwargs['user_permission']
+			if ("guest_permission" in kwargs): self.local.db_instance.guest_permission = kwargs['guest_permission']
+			if ("user_permission" in kwargs): self.local.db_instance.user_permission = kwargs['user_permission']
 		#
 	#
 #
