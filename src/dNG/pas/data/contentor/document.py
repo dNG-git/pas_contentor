@@ -56,6 +56,11 @@ class Document(DataLinker, LockableMixin, OwnableLockableReadMixin):
              GNU General Public License 2
 	"""
 
+	_DB_INSTANCE_CLASS = _DbContentorDocument
+	"""
+SQLAlchemy database instance class to initialize for new instances.
+	"""
+
 	def __init__(self, db_instance = None):
 	#
 		"""
@@ -69,6 +74,10 @@ Constructor __init__(Document)
 		DataLinker.__init__(self, db_instance)
 		LockableMixin.__init__(self)
 		OwnableLockableReadMixin.__init__(self)
+
+		self.set_max_inherited_permissions(OwnableLockableReadMixin.READABLE,
+		                                   OwnableLockableReadMixin.READABLE
+		                                  )
 	#
 
 	def delete(self):
@@ -148,13 +157,12 @@ Insert the instance into the database.
 
 			if (data_missing and (isinstance(parent_object, Category) or isinstance(parent_object, Document))):
 			#
-				parent_data = parent_object.get_data_attributes("id_site", "owner_type", "entry_type", "guest_permission", "user_permission")
+				parent_data = parent_object.get_data_attributes("id_site", "entry_type")
 
 				if (self.local.db_instance.id_site is None and parent_data['id_site'] is not None): self.local.db_instance.id_site = parent_data['id_site']
-				if (self.local.db_instance.owner_type is None): self.local.db_instance.owner_type = parent_data['owner_type']
 				if (self.local.db_instance.entry_type is None): self.local.db_instance.entry_type = parent_data['entry_type']
-				if (self.local.db_instance.guest_permission is None): self.local.db_instance.guest_permission = parent_data['guest_permission']
-				if (self.local.db_instance.user_permission is None): self.local.db_instance.user_permission = parent_data['user_permission']
+
+				self._copy_default_permission_settings_from_instance(parent_object)
 			#
 
 			# TODO: if (acl_missing and isinstance(parent_object, OwnableMixin)): self.data.acl_set_list(parent_object.data_acl_get_list())
@@ -168,8 +176,6 @@ Sets values given as keyword arguments to this method.
 
 :since: v0.1.00
 		"""
-
-		self._ensure_thread_local_instance(_DbContentorDocument)
 
 		with self, self.local.connection.no_autoflush:
 		#
