@@ -35,6 +35,7 @@ from time import time
 
 from dNG.pas.data.binary import Binary
 from dNG.pas.data.data_linker import DataLinker
+from dNG.pas.data.ownable_mixin import OwnableMixin as OwnableInstance
 from dNG.pas.data.ownable_lockable_read_mixin import OwnableLockableReadMixin
 from dNG.pas.database.lockable_mixin import LockableMixin
 from dNG.pas.database.sort_definition import SortDefinition
@@ -151,21 +152,25 @@ Insert the instance into the database.
 
 			if (self.local.db_instance.time_published is None): self.local.db_instance.time_published = int(time())
 
-			data_missing = self.is_data_attribute_none("owner_type", "entry_type", "guest_permission", "user_permission")
-			acl_missing = (len(self.local.db_instance.rel_acl) == 0)
-			parent_object = (self.load_parent() if (data_missing or acl_missing) else None)
+			is_acl_missing = (len(self.local.db_instance.rel_acl) == 0)
+			is_data_missing = self.is_data_attribute_none("owner_type", "entry_type")
+			is_permission_missing = self.is_data_attribute_none("guest_permission", "user_permission")
 
-			if (data_missing and (isinstance(parent_object, Category) or isinstance(parent_object, Document))):
+			parent_object = (self.load_parent() if (is_acl_missing or is_data_missing or is_permission_missing) else None)
+
+			if (is_data_missing and (isinstance(parent_object, Category) or isinstance(parent_object, Document))):
 			#
 				parent_data = parent_object.get_data_attributes("id_site", "entry_type")
 
 				if (self.local.db_instance.id_site is None and parent_data['id_site'] is not None): self.local.db_instance.id_site = parent_data['id_site']
 				if (self.local.db_instance.entry_type is None): self.local.db_instance.entry_type = parent_data['entry_type']
-
-				self._copy_default_permission_settings_from_instance(parent_object)
 			#
 
-			# TODO: if (acl_missing and isinstance(parent_object, OwnableMixin)): self.data.acl_set_list(parent_object.data_acl_get_list())
+			if (isinstance(parent_object, OwnableInstance)):
+			#
+				if (is_acl_missing): self._copy_acl_entries_from_instance(parent_object)
+				if (is_permission_missing): self._copy_default_permission_settings_from_instance(parent_object)
+			#
 		#
 	#
 
