@@ -42,11 +42,11 @@ class ContentorCategory(DataLinker, OwnableMixin):
 	"""
 "ContentorCategory" represents a contentor entry.
 
-:author:     direct Netware Group
+:author:     direct Netware Group et al.
 :copyright:  direct Netware Group - All rights reserved
 :package:    pas
 :subpackage: contentor
-:since:      v0.1.00
+:since:      v0.2.00
 :license:    https://www.direct-netware.de/redirect?licenses;gpl
              GNU General Public License 2
 	"""
@@ -55,7 +55,7 @@ class ContentorCategory(DataLinker, OwnableMixin):
 	"""
 SQLAlchemy table name
 	"""
-	db_instance_class = "dNG.pas.data.contentor.Category"
+	db_instance_class = "dNG.data.contentor.Category"
 	"""
 Encapsulating SQLAlchemy database instance class name
 	"""

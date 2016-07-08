@@ -31,23 +31,23 @@ https://www.direct-netware.de/redirect?licenses;gpl
 #echo(__FILEPATH__)#
 """
 
-from dNG.pas.data.binary import Binary
-from dNG.pas.data.data_linker import DataLinker
-from dNG.pas.data.ownable_lockable_write_mixin import OwnableLockableWriteMixin
-from dNG.pas.data.subscribable_mixin import SubscribableMixin
-from dNG.pas.database.lockable_mixin import LockableMixin
-from dNG.pas.database.instances.contentor_category import ContentorCategory as _DbContentorCategory
+from dNG.data.binary import Binary
+from dNG.data.data_linker import DataLinker
+from dNG.data.ownable_lockable_write_mixin import OwnableLockableWriteMixin
+from dNG.data.subscribable_mixin import SubscribableMixin
+from dNG.database.instances.contentor_category import ContentorCategory as _DbContentorCategory
+from dNG.database.lockable_mixin import LockableMixin
 
 class Category(DataLinker, LockableMixin, OwnableLockableWriteMixin, SubscribableMixin):
 #
 	"""
 "Category" represents a contentor category.
 
-:author:     direct Netware Group
+:author:     direct Netware Group et al.
 :copyright:  direct Netware Group - All rights reserved
 :package:    pas
 :subpackage: contentor
-:since:      v0.1.00
+:since:      v0.2.00
 :license:    https://www.direct-netware.de/redirect?licenses;gpl
              GNU General Public License 2
 	"""
@@ -64,7 +64,7 @@ Constructor __init__(Category)
 
 :param db_instance: Encapsulated SQLAlchemy database instance
 
-:since: v0.1.00
+:since: v0.2.00
 		"""
 
 		DataLinker.__init__(self, db_instance)
@@ -82,7 +82,7 @@ Returns the children categories of this instance.
 :param limit: SQLAlchemy query limit
 
 :return: (list) Category children instances
-:since:  v0.1.01
+:since:  v0.2.00
 		"""
 
 		if (self.log_handler is not None): self.log_handler.debug("#echo(__FILEPATH__)# -{0!r}.get_categories({1:d}, {2:d})- (#echo(__LINE__)#)", self, offset, limit, context = "pas_datalinker")
@@ -95,7 +95,7 @@ Returns the children categories of this instance.
 Returns the number of child categories of this instance.
 
 :return: (int) Number of child categories
-:since:  v0.1.01
+:since:  v0.2.00
 		"""
 
 		return DataLinker.get_sub_entries_count(self, identity = "ContentorCategory")
@@ -109,7 +109,7 @@ Returns the data for the requested attribute.
 :param attribute: Requested attribute
 
 :return: (mixed) Value for the requested attribute; None if undefined
-:since:  v0.1.00
+:since:  v0.2.00
 		"""
 
 		return (self.get_sub_entries_count()
@@ -127,7 +127,7 @@ Returns the child entries of this instance.
 :param limit: SQLAlchemy query limit
 
 :return: (list) DataLinker children instances
-:since:  v0.1.00
+:since:  v0.2.00
 		"""
 
 		if (self.log_handler is not None): self.log_handler.debug("#echo(__FILEPATH__)# -{0!r}.get_sub_entries({1:d}, {2:d})- (#echo(__LINE__)#)", self, offset, limit, context = "pas_datalinker")
@@ -140,7 +140,7 @@ Returns the child entries of this instance.
 Returns the number of child entries of this instance.
 
 :return: (int) Number of child entries
-:since:  v0.1.00
+:since:  v0.2.00
 		"""
 
 		return DataLinker.get_sub_entries_count(self, exclude_identity = "ContentorCategory")
@@ -154,7 +154,7 @@ Returns the data for the requested attribute not defined for this instance.
 :param attribute: Requested attribute
 
 :return: (dict) Value for the requested attribute; None if undefined
-:since:  v0.1.00
+:since:  v0.2.00
 		"""
 
 		if (attribute == "categories"): _return = self.get_categories_count()
@@ -168,7 +168,7 @@ Returns the data for the requested attribute not defined for this instance.
 		"""
 Sets values given as keyword arguments to this method.
 
-:since: v0.1.00
+:since: v0.2.00
 		"""
 
 		with self:

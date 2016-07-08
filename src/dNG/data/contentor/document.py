@@ -33,14 +33,15 @@ https://www.direct-netware.de/redirect?licenses;gpl
 
 from time import time
 
-from dNG.pas.data.binary import Binary
-from dNG.pas.data.data_linker import DataLinker
-from dNG.pas.data.ownable_mixin import OwnableMixin as OwnableInstance
-from dNG.pas.data.ownable_lockable_read_mixin import OwnableLockableReadMixin
-from dNG.pas.database.lockable_mixin import LockableMixin
-from dNG.pas.database.sort_definition import SortDefinition
-from dNG.pas.database.instances.contentor_document import ContentorDocument as _DbContentorDocument
-from dNG.pas.database.instances.text_entry import TextEntry as _DbTextEntry
+from dNG.data.binary import Binary
+from dNG.data.data_linker import DataLinker
+from dNG.data.ownable_mixin import OwnableMixin as OwnableInstance
+from dNG.data.ownable_lockable_read_mixin import OwnableLockableReadMixin
+from dNG.database.instances.contentor_document import ContentorDocument as _DbContentorDocument
+from dNG.database.instances.text_entry import TextEntry as _DbTextEntry
+from dNG.database.lockable_mixin import LockableMixin
+from dNG.database.sort_definition import SortDefinition
+
 from .category import Category
 
 class Document(DataLinker, LockableMixin, OwnableLockableReadMixin):
@@ -48,11 +49,11 @@ class Document(DataLinker, LockableMixin, OwnableLockableReadMixin):
 	"""
 "Document" represents a contentor entry.
 
-:author:     direct Netware Group
+:author:     direct Netware Group et al.
 :copyright:  direct Netware Group - All rights reserved
 :package:    pas
 :subpackage: contentor
-:since:      v0.1.00
+:since:      v0.2.00
 :license:    https://www.direct-netware.de/redirect?licenses;gpl
              GNU General Public License 2
 	"""
@@ -69,7 +70,7 @@ Constructor __init__(Document)
 
 :param db_instance: Encapsulated SQLAlchemy database instance
 
-:since: v0.1.00
+:since: v0.2.00
 		"""
 
 		DataLinker.__init__(self, db_instance)
@@ -86,7 +87,7 @@ Constructor __init__(Document)
 		"""
 Deletes this entry from the database.
 
-:since: v0.1.00
+:since: v0.2.00
 		"""
 
 		if (self.log_handler is not None): self.log_handler.debug("#echo(__FILEPATH__)# -{0!r}.delete()- (#echo(__LINE__)#)", self, context = "pas_datalinker")
@@ -108,7 +109,7 @@ Returns the default sort definition list.
 :param context: Sort definition context
 
 :return: (object) Sort definition
-:since:  v0.1.00
+:since:  v0.2.00
 		"""
 
 		if (self.log_handler is not None): self.log_handler.debug("#echo(__FILEPATH__)# -{0!r}._get_default_sort_definition({1})- (#echo(__LINE__)#)", self, context, context = "pas_datalinker")
@@ -129,7 +130,7 @@ Returns the data for the requested attribute not defined for this instance.
 :param attribute: Requested attribute
 
 :return: (dict) Value for the requested attribute
-:since:  v0.1.00
+:since:  v0.2.00
 		"""
 
 		if (attribute == "content" and self.local.db_instance.rel_text_entry is not None): _return = self.local.db_instance.rel_text_entry.content
@@ -143,7 +144,7 @@ Returns the data for the requested attribute not defined for this instance.
 		"""
 Insert the instance into the database.
 
-:since: v0.1.00
+:since: v0.2.00
 		"""
 
 		with self.local.connection.no_autoflush:
@@ -179,7 +180,7 @@ Insert the instance into the database.
 		"""
 Sets values given as keyword arguments to this method.
 
-:since: v0.1.00
+:since: v0.2.00
 		"""
 
 		with self, self.local.connection.no_autoflush:
