@@ -34,7 +34,8 @@ https://www.direct-netware.de/redirect?licenses;gpl
 from sqlalchemy.schema import Column, ForeignKey
 from sqlalchemy.types import BOOLEAN, CHAR, VARCHAR
 
-from dNG.pas.database.types.date_time import DateTime
+from dNG.database.types.date_time import DateTime
+
 from .data_linker import DataLinker
 from .text_mixin import TextMixin
 from .ownable_mixin import OwnableMixin
