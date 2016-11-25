@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-##j## BOF
 
 """
 direct PAS
@@ -41,8 +40,7 @@ from .text_mixin import TextMixin
 from .ownable_mixin import OwnableMixin
 
 class ContentorDocument(DataLinker, TextMixin, OwnableMixin):
-#
-	"""
+    """
 "ContentorDocument" represents a contentor entry.
 
 :author:     direct Netware Group et al.
@@ -52,67 +50,65 @@ class ContentorDocument(DataLinker, TextMixin, OwnableMixin):
 :since:      v0.2.00
 :license:    https://www.direct-netware.de/redirect?licenses;gpl
              GNU General Public License 2
-	"""
+    """
 
-	__tablename__ = "{0}_contentor_document".format(DataLinker.get_table_prefix())
-	"""
+    __tablename__ = "{0}_contentor_document".format(DataLinker.get_table_prefix())
+    """
 SQLAlchemy table name
-	"""
-	db_instance_class = "dNG.data.contentor.Document"
-	"""
+    """
+    db_instance_class = "dNG.data.contentor.Document"
+    """
 Encapsulating SQLAlchemy database instance class name
-	"""
-	db_schema_version = 1
-	"""
+    """
+    db_schema_version = 1
+    """
 Database schema version
-	"""
+    """
 
-	id = Column(VARCHAR(32), ForeignKey(DataLinker.id), primary_key = True)
-	"""
+    id = Column(VARCHAR(32), ForeignKey(DataLinker.id), primary_key = True)
+    """
 contentor_document.id
-	"""
-	entry_type = Column(VARCHAR(255), server_default = "simple", nullable = False)
-	"""
+    """
+    entry_type = Column(VARCHAR(255), server_default = "simple", nullable = False)
+    """
 contentor_document.entry_type
-	"""
-	owner_type = Column(CHAR(1), server_default = "u", nullable = False)
-	"""
+    """
+    owner_type = Column(CHAR(1), server_default = "u", nullable = False)
+    """
 contentor_document.owner_type
-	"""
-	author_id = Column(VARCHAR(32))
-	"""
+    """
+    author_id = Column(VARCHAR(32))
+    """
 contentor_document.author_id
-	"""
-	author_ip = Column(VARCHAR(100))
-	"""
+    """
+    author_ip = Column(VARCHAR(100))
+    """
 contentor_document.author_ip
-	"""
-	time_published = Column(DateTime, index = True, nullable = False)
-	"""
+    """
+    time_published = Column(DateTime, index = True, nullable = False)
+    """
 contentor_document.time_published
-	"""
-	description = Column(VARCHAR(255), server_default = "", nullable = False)
-	"""
+    """
+    description = Column(VARCHAR(255), server_default = "", nullable = False)
+    """
 contentor_document.description
-	"""
-	locked = Column(BOOLEAN, server_default = "0", nullable = False)
-	"""
+    """
+    locked = Column(BOOLEAN, server_default = "0", nullable = False)
+    """
 contentor_document.locked
-	"""
-	guest_permission = Column(CHAR(1), server_default = "", nullable = False)
-	"""
+    """
+    guest_permission = Column(CHAR(1), server_default = "", nullable = False)
+    """
 contentor_category.guest_permission
-	"""
-	user_permission = Column(CHAR(1), server_default = "", nullable = False)
-	"""
+    """
+    user_permission = Column(CHAR(1), server_default = "", nullable = False)
+    """
 contentor_category.user_permission
-	"""
+    """
 
-	__mapper_args__ = { "polymorphic_identity": "ContentorDocument" }
-	"""
+    __mapper_args__ = { "polymorphic_identity": "ContentorDocument" }
+    """
 sqlalchemy.org: Other options are passed to mapper() using the
 __mapper_args__ class variable.
-	"""
+    """
 #
-
-##j## EOF

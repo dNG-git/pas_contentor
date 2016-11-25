@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-##j## BOF
 
 """
 direct PAS
@@ -38,8 +37,7 @@ from .data_linker import DataLinker
 from .ownable_mixin import OwnableMixin
 
 class ContentorCategory(DataLinker, OwnableMixin):
-#
-	"""
+    """
 "ContentorCategory" represents a contentor entry.
 
 :author:     direct Netware Group et al.
@@ -49,55 +47,53 @@ class ContentorCategory(DataLinker, OwnableMixin):
 :since:      v0.2.00
 :license:    https://www.direct-netware.de/redirect?licenses;gpl
              GNU General Public License 2
-	"""
+    """
 
-	__tablename__ = "{0}_contentor_category".format(DataLinker.get_table_prefix())
-	"""
+    __tablename__ = "{0}_contentor_category".format(DataLinker.get_table_prefix())
+    """
 SQLAlchemy table name
-	"""
-	db_instance_class = "dNG.data.contentor.Category"
-	"""
+    """
+    db_instance_class = "dNG.data.contentor.Category"
+    """
 Encapsulating SQLAlchemy database instance class name
-	"""
-	db_schema_version = 1
-	"""
+    """
+    db_schema_version = 1
+    """
 Database schema version
-	"""
+    """
 
-	id = Column(VARCHAR(32), ForeignKey(DataLinker.id), primary_key = True)
-	"""
+    id = Column(VARCHAR(32), ForeignKey(DataLinker.id), primary_key = True)
+    """
 contentor_category.id
-	"""
-	id_subscription = Column(VARCHAR(255), index = True)
-	"""
+    """
+    id_subscription = Column(VARCHAR(255), index = True)
+    """
 contentor_category.id_subscription
-	"""
-	entry_type = Column(VARCHAR(255), server_default = "simple", nullable = False)
-	"""
+    """
+    entry_type = Column(VARCHAR(255), server_default = "simple", nullable = False)
+    """
 contentor_category.entry_type
-	"""
-	owner_type = Column(CHAR(1), server_default = "u", nullable = False)
-	"""
+    """
+    owner_type = Column(CHAR(1), server_default = "u", nullable = False)
+    """
 contentor_category.owner_type
-	"""
-	locked = Column(BOOLEAN, server_default = "0", nullable = False)
-	"""
+    """
+    locked = Column(BOOLEAN, server_default = "0", nullable = False)
+    """
 contentor_category.locked
-	"""
-	guest_permission = Column(CHAR(1), server_default = "", nullable = False)
-	"""
+    """
+    guest_permission = Column(CHAR(1), server_default = "", nullable = False)
+    """
 contentor_category.guest_permission
-	"""
-	user_permission = Column(CHAR(1), server_default = "", nullable = False)
-	"""
+    """
+    user_permission = Column(CHAR(1), server_default = "", nullable = False)
+    """
 contentor_category.user_permission
-	"""
+    """
 
-	__mapper_args__ = { "polymorphic_identity": "ContentorCategory" }
-	"""
+    __mapper_args__ = { "polymorphic_identity": "ContentorCategory" }
+    """
 sqlalchemy.org: Other options are passed to mapper() using the
 __mapper_args__ class variable.
-	"""
+    """
 #
-
-##j## EOF
